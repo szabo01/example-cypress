@@ -13,16 +13,20 @@ describe('Work with alerts', () => {
   })
 
   // Ótimo para pegar os anúncios de sucesso a partir do alert
-  it('Alert', () => {
-    cy.get('#alert').click()
-    // Pega eventos que ocorrem na tela
-    cy.on('window:alert', msg => {
-      console.log(msg)
-      expect(msg).to.be.equal('Alert Simples')
-    })
+  it.only('Alert', () => {
+    // cy.get('#alert').click()
+    // // Pega eventos que ocorrem na tela
+    // cy.on('window:alert', msg => {
+    //   console.log(msg)
+    //   expect(msg).to.be.equal('Alert Simples')
+    // })
+
+    cy.clickAlert('#alert', 'Alert Simples')
+
+
   })
 
-  it.only('Alert com mock', () => {
+  it('Alert com mock', () => {
     // Substitui uma função, sobrescrever um comportamento ( dizer o que vai retornar (métodos dificeis))
     // Alias é ótimo dado como alerta
     const stub = cy.stub().as('alerta')
@@ -40,7 +44,7 @@ describe('Work with alerts', () => {
     })
   })
 
-  it.only('Confirm', () => {
+  it('Confirm', () => {
     cy.get('#confirm').click()
     // Pega eventos que ocorrem na tela
     cy.on('window:confirm', msg => {
@@ -56,7 +60,7 @@ describe('Work with alerts', () => {
     cy.get('#confirm').click()
   })
 
-  it.only('Confirm', () => {
+  it('Confirm', () => {
     cy.get('#confirm').click()
     // Pega eventos que ocorrem na tela
     cy.on('window:confirm', msg => {
@@ -72,7 +76,7 @@ describe('Work with alerts', () => {
     cy.get('#confirm').click()
   })
 
-  it.only('Deny', () => {
+  it('Deny', () => {
     cy.on('window:confirm', msg => {
       expect(msg).to.be.equal('Confirm Simples')
       return false
@@ -88,7 +92,7 @@ describe('Work with alerts', () => {
   })
 
 
-  it.only('Prompt', () => {
+  it('Prompt', () => {
     // mocando método prompt do window
     // Agora tenho o objeto que está gerenciando toda a página
     // para trabalhar com ele, preciso coloca-lo em uma promisse que recebo como parâmetro o window
@@ -126,7 +130,7 @@ describe('Work with alerts', () => {
   })
 
 
-  it.only('Validando mensagens', () => {
+  it('Validando mensagens', () => {
 
     const stub = cy.stub().as('alerta')
     cy.on('window:alert', stub)
