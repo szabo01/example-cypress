@@ -1,34 +1,65 @@
 /// <reference types="cypress"/>
 
+import loc from '../../support/locators'
+import '../../support/commandsContas'
+
 describe('Work with alerts', () => {
 
     // Executa uma vez apenas, antes de todos os testes...
     before(() => {
-      cy.visit('http://barrigareact.wcaquino.me/')
-      cy.get('.input-group > .form-control').type('lti@lti.com')
-      cy.get(':nth-child(2) > .form-control').type('123456')
-      cy.get('.btn').click()
-      cy.get('.toast-message').should('contain', 'Bem vindo, Lti!')
-    })
+      cy.login('lti@lti.com', '123456')
+      cy.resetApp();
+        })
 
     it('Should create an account', () => {
-        cy.get('[data-test=menu-settings]').click()
-        cy.get('[href="/contas"]').click()
-        cy.get('[data-test=nome]').type('Robinho')
-        cy.get('.btn').click()
-        cy.get('.toast-message').should('contain', 'Conta inserida com sucesso')
+        cy.acessarMenuConta();
+        cy.inserirConta('Robinho')
+
+        // cy.get(loc.CONTAS.NOME).type('Robinho')
+        // cy.get(loc.CONTAS.BTN_SALVAR).click()
+        cy.get(loc.MESSAGE).should('contain', 'Conta inserida com sucesso')
 
     })
 
     it('Should update an account', () => {
-        cy.get('[data-test=menu-settings]').click()
-        cy.get('[href="/contas"]').click()
-        cy.xpath("//table//td[contains(., 'Robinho')]/..//i[@class='far fa-edit']").click()
-        cy.get('[data-test=nome]')
+      cy.acessarMenuConta();
+        cy.xpath(loc.CONTAS.XP_BTN_ALTERAR).click()
+        cy.get(loc.CONTAS.NOME)
           .clear()
           .type('Conta alterada')
-        cy.get('.btn').click()
-        cy.get('.toast-message').should('contain', 'Conta atualizada com sucesso!')
+        cy.get(loc.CONTAS.BTN_SALVAR).click()
+        cy.get(loc.MESSAGE).should('contain', 'Conta atualizada com sucesso!')
         
+    })
+
+    it('Should not create an account with same name', () => {
+      cy.acessarMenuConta();
+
+      cy.get(loc.CONTAS.NOME).type('Conta alterada')
+      cy.get(loc.CONTAS.BTN_SALVAR).click()
+      cy.get(loc.MESSAGE).should('contain', 'code 400')
+
+    })
+
+    it('Should create a transition', () => {
+      cy.get(loc.MENU.MOVIMENTACAO).click()
+
+      cy.get(loc.MOVIMENTACAO.DESCRICAO).type('LTI')
+      cy.get(loc.MOVIMENTACAO.VALOR).type('123')
+      cy.get(loc.MOVIMENTACAO.INTERESSADO).type('Inter')
+      cy.get(loc.MOVIMENTACAO.STATUS).click()
+      cy.get(loc.MOVIMENTACAO.BTN_SALVAR).click()
+      cy.get(loc.MESSAGE).should('contain', 'sucesso')
+
+      cy.get(loc.EXTRATO.LINHAS).should('have.length', 7)
+
+      cy.xpath(loc.EXTRATO.XP_BUSCA_ELEMENTO).should('exist')
+
+
+    })
+
+
+    it('Should get balarce', () =>{
+      
     })
 })
