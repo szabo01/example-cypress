@@ -8,6 +8,7 @@ describe('Work with basic elements', () => {
   })
 
   //Executa antes de cada um dos testes 'it()'
+  // contains também é uma forma de busca, mas o .get é melhor
   beforeEach(() => {
     cy.reload()
   })
@@ -34,10 +35,12 @@ describe('Work with basic elements', () => {
 
   it('Text Fileds', () => {
     cy.get('#formNome').type('Robson Szabo')
-    //Aqui deve ser have.value e não have.text
+    //Aqui deve ser have.value e não have.text, pois para tratar
+    // um text.field, devo usar '.value'
     cy.get('#formNome').should('have.value', 'Robson Szabo')
 
     // Para os dois pontos serem entendidos, foi preciso colocar mais uma \
+    // Para o cypress conhecer os ':", devo colocar '\\'"
     cy.get('#elementosForm\\:sugestoes')
       .type('LTI')
       .should('have.value', 'LTI')
@@ -55,6 +58,7 @@ describe('Work with basic elements', () => {
 
   })
 
+  // Só posso selecionar uma opção
   it('Radio button', () => {
     cy.get('#formSexoFem')
       .click()
@@ -66,6 +70,7 @@ describe('Work with basic elements', () => {
 
   })
 
+  // Posso selecionar 'N', opções
   it('Checkbox', () => {
     cy.get('#formComidaPizza')
       .click()

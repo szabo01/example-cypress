@@ -65,10 +65,20 @@ it('String', () => {
   expect(str).to.be.have.length(15)
   expect(str).to.contains('de')
   expect(str).to.match(/de/)
+  
+  //Deve iniciar com 'String'
   expect(str).to.match(/^String/)
+  
+  //Deve finalizar com 'teste'
   expect(str).to.match(/teste$/)
+  
+  //tamanho
   expect(str).to.match(/.{15}/)
+  
+  //existe apenas letras '+' representa 1 ou mais
   expect(str).to.match(/|w+/)
+  
+  // Não contém números
   expect(str).to.match(/|D+/)
 
 })
@@ -83,5 +93,5 @@ it('Numbers', () => {
   expect(floatNumber).to.be.equal(4.5)
   expect(floatNumber).to.not.be.equal(4.555)
   // expect(floatNumber).to.be.closeTo(4, 0.1) //próximo de 5.2, com precisão de 0.1
-  expect(floatNumber).to.not.be.above(5) //Acima de
+  expect(floatNumber).to.not.be.above(5) //Acima de '5'
 })
